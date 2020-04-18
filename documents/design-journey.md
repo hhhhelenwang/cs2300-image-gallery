@@ -18,9 +18,9 @@ Be clear and concise in your writing. Bullets points are encouraged.
 
 > If using your existing Project 1 or Project 2, please upload sketches of your final design here.
 - Here is the design of my Project 2. How this design evolves to an image gallery will be in the next section.
-- ![page 1](documents/page1.jpg)
-- ![page 2](documents/page2.jpg)
-- ![page 3](documents/page3.jpg)
+- ![page 1](page1.jpg)
+- ![page 2](page2.jpg)
+- ![page 3](page3.jpg)
 
 ## Target Audience(s) (Milestone 1)
 > Tell us about your target audience(s).
@@ -31,15 +31,15 @@ Be clear and concise in your writing. Bullets points are encouraged.
 > Label all images. All labels must be visible in VS Code's Markdown Preview.
 > Clearly label the final design.
 - Idea listings
-- ![idea listings](documents/p3-pg1.jpg)
+- ![idea listings](p3-pg1.jpg)
 
 - Rough sketches
-- ![rough sketches](documents/p3-pg2.jpg)
+- ![rough sketches](p3-pg2.jpg)
 
 - Final designs
-- ![final designs](documents/p3-pg3.jpg)
-- ![final designs](documents/p3-pg4.jpg)
-- ![final designs](documents/p3-pg5.jpg)
+- ![final designs](p3-pg3.jpg)
+- ![final designs](p3-pg4.jpg)
+- ![final designs](p3-pg5.jpg)
 
 
 ## Design Patterns (Milestone 1)
