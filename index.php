@@ -1,4 +1,6 @@
-<?php include("includes/init.php"); ?>
+<?php include("includes/init.php");
+$title = "Home"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +8,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>TODO</title>
+  <link rel="stylesheet" type="text/css" href="styles/site.css" media="all">
+
+  <title> Composer DB - <?php echo $title; ?></title>
 </head>
 
 <body>
 
-  <!-- TODO: This should be your main page for your site. Remove this file when you're ready!-->
+  <header>
+    <?php include("includes/header.php"); ?>
+  </header>
+
+  <main>
+
+    <?php
+    $sql = "SELECT composer, country, era, piece FROM composers;";
+    $result = exec_sql_query($db, $sql);
+    ?>
+
+
+
+    </table>
+    <cite>Source: <a href="http://artquiz.sourceforge.net/cmap/">The List of Composers is in reference from here</a></cite>
+
+  </main>
+
+
+  <footer>
+    <?php include("includes/footer.php"); ?>
+  </footer>
+
 
 </body>
 

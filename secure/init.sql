@@ -9,6 +9,27 @@ BEGIN TRANSACTION;
 -- );
 
 
+CREATE TABLE images (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    file_name TEXT NOT NULL,
+    file_ex TEXT NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE tags (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    tag_name TEXT NOT NULL
+
+);
+
+CREATE TABLE image_tags (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    image_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL
+
+);
+
+
 -- TODO: initial seed data
 
 -- INSERT INTO `examples` (id,name) VALUES (1, 'example-1');
