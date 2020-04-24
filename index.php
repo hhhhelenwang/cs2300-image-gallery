@@ -21,15 +21,7 @@ $title = "Home"; ?>
 
   <main>
 
-    <?php
-    $sql = "SELECT composer, country, era, piece FROM composers;";
-    $result = exec_sql_query($db, $sql);
-    ?>
 
-
-
-    </table>
-    <cite>Source: <a href="http://artquiz.sourceforge.net/cmap/">The List of Composers is in reference from here</a></cite>
 
   </main>
 
