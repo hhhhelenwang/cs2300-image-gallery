@@ -36,12 +36,35 @@ nav ul {
     padding: 0;
 }
 
-
 nav li {
     display: inline-block;
-    align-items: center;
-    width: 100px;
 }
+
+ nav li.home {
+    width: 100px;
+    background-color: #ca3e47;
+}
+
+nav li.tag {
+    width: 200px;
+    height: 30px;
+    margin: 10px;
+    font-size: large;
+
+}
+
+nav li.filter {
+    width: 25px;
+}
+
+img.filter{
+    width: 25px;
+    height: 25px;
+    background-color: #525252;
+    cursor: pointer;
+
+}
+
 
 nav li a{
     display: inline-block;
@@ -53,13 +76,7 @@ nav li a{
     font-size: larger;
 }
 
-li.current {
-    background-color: #ca3e47;
-}
 
-li:hover {
-    background-color: #ca3e47;
-}
 
 p {
     color: black;
@@ -101,31 +118,6 @@ tr:nth-child(odd) {
     background: #e9e9e9;
 }
 
-.search {
-    align-items: center;
-    text-align: center;
-    margin-top: 100px;
-}
-
-#search {
-    padding: 10px;
-    font-size: large;
-    width: 500px;
-
-}
-
-button {
-    display: inline-block;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-img{
-    width: 25px;
-    height: 25px;
-    opacity: 60%;
-}
 
 img:hover{
     opacity: 90%;
@@ -171,14 +163,6 @@ label{
 
 }
 
-input {
-    width: 500px;
-    height: 30px;
-    margin-top: 10px;
-    font-size: large;
-
-}
-
 .group_label_input{
     width: 500px;
     margin-right: auto;
@@ -187,25 +171,7 @@ input {
     margin-bottom: 20px;
 }
 
-input[type=submit] {
-    color: white;
-    background-color: #ca3e47;
-    width: 200px;
-    height: 50px;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-right: 150px;
-    margin-left: 150px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: larger;
-}
 
-input[type=submit]:hover {
-    background-color: #ca3e47cf;
-}
 
 div.citations {
     width: 800px;
@@ -218,5 +184,21 @@ div.citations {
 
 cite.footer {
     color: white;
+
+}
+
+img {
+    width: 300px;
+    height: 300px;
+    opacity: 100%;
+}
+
+div.gallery {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
 
 }
