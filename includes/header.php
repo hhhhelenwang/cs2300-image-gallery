@@ -1,20 +1,19 @@
 <h1 class="title">Every Day Music</h1>
 
 <nav>
-
     <ul>
-        <li class="home"><a href="index.php">Home</a></li>
+        <div class="home">
+            <a href="index.php"><img id="home-button" src="images/home-icon.svg"></a>
+        </div>
 
-        <form id="tagfilter" action="index.php" method="get">
-        <li class="tag">
+        <form id="search" action="index.php" method="get">
             <input type="text" id="tag" name="tag" />
-        </li>
-        <li class="filter">
-            <button type="submit"><img class="filter" src="images/search-icon.png"></button>
-        </li>
+            <button type="submit"><img id="search-button" src="images/search-icon.svg"></button>
         </form>
 
+        <div class="upload">
+            <a href="upload.php"><img id="upload-button" src="images/upload.svg"></a>
+        </div>
     </ul>
-
 
 </nav>
