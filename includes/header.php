@@ -1,19 +1,18 @@
-<h1 class="title">Every Day Music</h1>
 
-<nav>
-    <ul>
-        <div class="home">
-            <a href="index.php"><img id="home-button" src="images/home-icon.svg"></a>
-        </div>
+<div class=nav>
+    <h1 class="title">Everyday Music</h1>
 
+    <a href="upload.php"><img id="upload-button" class="<?php echo ($title=="Upload")? 'current' : 'upload-button' ?>" src="images/upload.svg"></a>
+
+    <div class="search">
         <form id="search" action="index.php" method="get">
-            <input type="text" id="tag" name="tag" />
-            <button type="submit"><img id="search-button" src="images/search-icon.svg"></button>
+
+            <input type="text" id="tag" name="tag" placeholder="Search by tag..." />
+            <button type="submit"><img id="search-button" src="images/search-icon.png"></button>
+
         </form>
+    </div>
 
-        <div class="upload">
-            <a href="upload.php"><img id="upload-button" src="images/upload.svg"></a>
-        </div>
-    </ul>
+    <a href="index.php"><img id="home-button" class="<?php echo ($title=="Home")? 'current' : 'home-button' ?>" src="images/home-icon.svg"></a>
 
-</nav>
+</div>

@@ -54,15 +54,16 @@ INSERT INTO tags (id, tag_name) VALUES (5, "onstage");
 
 -- image_tags
 INSERT INTO image_tags (id, image_id, tag_id) VALUES (1, 1, 2);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (2, 2, 5);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (3, 3, 2);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (4, 4, 5);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (5, 5, 2);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (6, 6, 1);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (7, 7, 3);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (8, 8, 3);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (9, 9, 1);
-INSERT INTO image_tags (id, image_id, tag_id) VALUES (10, 10, 4);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (2, 1, 5);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (3, 2, 5);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (4, 3, 2);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (5, 4, 5);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (6, 5, 2);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (7, 6, 1);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (8, 7, 3);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (9, 8, 3);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (10, 9, 1);
+INSERT INTO image_tags (id, image_id, tag_id) VALUES (11, 10, 4);
 
 
 
