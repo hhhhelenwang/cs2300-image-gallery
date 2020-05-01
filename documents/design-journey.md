@@ -66,7 +66,7 @@ Example:
   - Type: GET
   - Params: id or image_id
 
-- Request: upload image with descriptions and tags
+- Request: upload image
   - Type: POST
   - through form
 
@@ -77,6 +77,14 @@ Example:
 - Request: view by tag
  - Type: GET
  - Params: id or tags_id
+
+- Request: add a tag
+  - Type: POST
+  - through form
+
+- Request: delete a tag
+  - TYPE: POST
+  - through form (button)
 
 
 ## Database Schema Design (Milestone 1)
@@ -121,12 +129,64 @@ image-tags (
 > Plan your database queries. You may use natural language, pseudocode, or SQL.
 > Using your request plan above, plan all of the queries you need.
 
-- view an image:
-  - select file from images where id = the string param
+- view all images
+  ```sql
+  SELECT id, file_name FROM images;
+  ```
+
+- view a single image
+  ```sql
+    SELECT file_name, description FROM images WHERE id == <a given id>;
+  ```
 
 - view by tag
-  - select file from tags join image-tags on tag_id = param join tag join images on image-tags.image_id = id
+  ```sql
+  SELECT file_name, description FROM images WHERE tag LIKE '%<a given tag>%';
+  ```
 
+- retrieve all tags for one image
+  ```sql
+  SELECT DISTINCT tags.tag_name from tags INNER JOIN image_tags ON tags.id == image_tags.tag_id INNER JOIN images ON image_tags.image_id == <a given id>;
+  ```
+
+- upload an image (insert image, insert tag, insert image_tags relation)
+ ```sql
+ INSERT INTO images (file_name, file_ext, description) VALUES (<given filename>, <given file_ext>, <given description>);
+
+ INSERT INTO tags (tag_name) VALUES (<given tag>);
+
+ SELECT id FROM images WHERE file_name == <the filename just stored>
+
+ SELECT id FROM tags WHERE tag_name == <the tag just stored>
+
+ (store the image_id and tag_id into two variables)
+
+ INSERT INTO image_tags (image_id, tag_id) VALUES (<the image id just retrieved>, <the tag id just retrieved>);
+ ```
+
+- delete an image
+  ```sql
+  DELETE FROM images WHERE id == <given id>;
+
+  DELETE FROM tags INNER JOIN image_tags ON tags.id == image_tags.tag_id INNER JOIN images ON image_tags.image_id == <a given id>;
+  ```
+
+- add a tag to an image
+  ```sql
+  INSERT INTO tags (tag_name) VALUES (<the given tag name>);
+
+  SELECT id FROM tags WHERE tag_name == <the tag just stored>;
+
+  INSERT INTO image_tags (image_id, tag_id) VALUES (<the image id>, <the tag id just retrieved>);
+
+  ```
+
+- delete a tag from an image
+  ```sql
+  DELETE FROM tags WHERE id == <given id>;
+
+  DELETE FROM tags INNER JOIN image_tags ON tags.id == image_tags.tag_id INNER JOIN images ON image_tags.image_id == <a given id>;
+  ```
 
 ## Code Planning (Milestone 1)
 > Plan what top level PHP pages you'll need.

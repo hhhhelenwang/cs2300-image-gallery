@@ -30,7 +30,7 @@ function get_all_images_requested ($db, $id, $tag) {
 //a function that takes in db and an image id
 // and returns a list of tags for this image
 function get_tags ($db, $id) {
-  $get_tags_sql = "SELECT DISTINCT tags.tag_name from tags INNER JOIN image_tags ON tags.id == image_tags.tag_id INNER JOIN images ON image_tags.image_id == " . ":id";
+  $get_tags_sql = "SELECT DISTINCT tags.tag_name from tags INNER JOIN image_tags ON tags.id == image_tags.tag_id INNER JOIN images ON image_tags.image_id == " . ":id;";
   $params = [":id" => $id];
   $image_tags = exec_sql_query($db, $get_tags_sql, $params)->fetchAll();
   return $image_tags;
