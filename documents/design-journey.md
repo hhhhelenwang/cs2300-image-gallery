@@ -190,13 +190,13 @@ image-tags (
 
 ## Code Planning (Milestone 1)
 > Plan what top level PHP pages you'll need.
-- home page (all images + view by tag)
-- single-image page
-- upload image page
+- home page (all images + view by tag + upload + view single image)
+
 
 > Plan what partials you'll need.
 - header + nav bar partials: includes search bar + upload icon
 - footer partials
+- helper functions
 
 > Plan any PHP code you'll need.
 
@@ -204,6 +204,63 @@ Example:
 ```
 Put all code in between the sets of backticks: ``` code here ```
 ```
+- view single image
+```
+if (isset($_GET['image_id'])){
+  $view_single_image = TRUE;
+  $id = $_GET['image_id'];
+
+  get_all_images_requested
+  get single image
+  get the tags
+}
+
+```
+- view by tag
+```
+if (isset($_GET['tag'])) {
+  $view_image_by_tag = TRUE;
+  get_all_images_requested
+}
+```
+
+- upload
+```
+if (isset($_GET['upload'])) {
+  $upload_image = TRUE;
+
+  $image_uploaded = FALSE;
+
+  // if there is a upload (post request)
+  if (isset($_POST["image_upload"])){
+    $info = $_FILES["image"];
+
+    if ($info["error"] == UPLOAD_ERR_OK){
+      store file name from $info;
+      store file ext from info;
+
+      get description from input
+
+      get tags
+      sanitize tags
+      put tags into an array
+
+      store image info in to images table
+
+      if the image is stored successfully into images table {
+        form path to store image on server
+
+        check all tags, if the tag does not exist in database, add tag to database
+
+        if tag is not a tag of this image, add tag to this image
+
+
+      }
+    }
+  }
+}
+```
+
 
 
 # Complete & Polished Website (Final Submission)
@@ -213,20 +270,23 @@ Put all code in between the sets of backticks: ``` code here ```
 > For each set of instructions, assume the grader is starting from index.php.
 
 Viewing all images in your gallery:
-1.
+1. Go to index.php (home)
 2.
 
 View all images for a tag:
-1.
-2.
+1. at the search bar in the nav bar, type in the tag you want to view
+2. click the search icon
 
 View a single image and all the tags for that image:
-1.
-2.
+1. click any image displayed
+2. it brings you to view-single-image page and displays all info
 
 How to upload a new image:
-1.
-2.
+1. click the upload button on the nav bar
+2. click "browse" to select your file
+3. type in description
+4. type in tags, seperate two tags with ";"
+5. hit the upload button
 
 How to delete an image:
 1.
@@ -237,8 +297,10 @@ How to view all tags at once:
 2.
 
 How to add a tag to an existing image:
-1.
-2.
+1. click an image on the home page and go to view-single-image page
+2. click the edit icon on the top-right. it looks like a pen and a piece of paper
+3. in the input space that pops out, enter the tags you want to add, seperate two tags with ";"
+4. hit the "ok" button which looks like a tick
 
 How to remove a tag from an existing image:
 1.
@@ -247,3 +309,5 @@ How to remove a tag from an existing image:
 
 ## Reflection (Final Submission)
 > Take this time to reflect on what you learned during this assignment. How have you improved since starting this class?
+- I leanred to manage a project that is much larger in scale compared to previous assignments. I am now more familiar with development with databases.
+- I learned that failing to manage my time leads to serious consequences because I could not implement all required functionalities before deadline.

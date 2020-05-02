@@ -1,69 +1,110 @@
-<?php include("includes/init.php");
+<?php
+include("includes/init.php");
+include("includes/helpers.php");
 $title = "Home";
+const MAX_FILE_SIZE = 1000000;
+
+$view_single_image = FALSE;
+$upload_image = FALSE;
+$view_image_by_tag = FALSE;
+
+//if there is a request to view a single image
+if (isset($_GET['image_id'])){
+  $view_single_image = TRUE;
+  $id = $_GET['image_id'];
+
+  $images = get_all_images_requested($db, $id, null); // the assciative array
+  $img = $images[0]; // the image
+  $tags = get_tags($db, $id);
+
+}
+
+$edit_image = FALSE;
+$delete_image = FALSE;
+if (isset($_POST['edit'])) {
+  $edit_image = TRUE;
+
+}
+
+if (isset($_GET['new_tags'])){
+  $new_tags = strtolower(filter_input(INPUT_POST, 'new-tags', FILTER_SANITIZE_STRING));
+  $new_tags_not_trimed = explode(";", $tags_input);
+  // source: https://www.php.net/manual/en/function.explode.php
+  $new_tags = array();
+  foreach ($tags_not_trimed as $tag) {
+    array_push($tags, trim($tag));
+  }
+
+  add_new_tags($db, $id, $new_tags);
+
+}
+
+
+//if there is a request to view images by a tag
+if (isset($_GET['tag'])) {
+  $view_image_by_tag = TRUE;
+
+  $tag = $_GET['tag'];
+  $tag_id = get_tag_id($db, $tag);
+  $images_by_tag = get_all_images_requested($db, null, $tag_id);
+}
+
+// if there is a request to upload an image
+if (isset($_GET['upload'])) {
+  $upload_image = TRUE;
+
+  $image_uploaded = FALSE;
+
+  // if there is a upload (post request)
+  if (isset($_POST["image_upload"])){
+    $info = $_FILES["image"];
+
+    if ($info["error"] == UPLOAD_ERR_OK){
+      $file_name = basename($info["name"]);
+      $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+      $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+
+      $tags_input = strtolower(filter_input(INPUT_POST, 'tags', FILTER_SANITIZE_STRING));
+      $tags_not_trimed = explode(";", $tags_input);
+      // source: https://www.php.net/manual/en/function.explode.php
+      $tags = array();
+      foreach ($tags_not_trimed as $tag) {
+        array_push($tags, trim($tag));
+      }
+
+      $store_image_sql = "INSERT INTO images (file_name, file_ext, description) VALUES (:file_name, :file_ext, :description);";
+      $store_image_params = [
+        ":file_name" => $file_name,
+        ":file_ext" => $file_ext,
+        ":description" => $description
+      ];
+
+      // if the image is stored successfully into images table
+      if (exec_sql_query($db, $store_image_sql, $store_image_params)) {
+        $image_id = $db->lastInsertId();
+        $new_file_name = $image_id . "." . $file_ext;
+        $new_path = "uploads/" . $new_file_name;
+        move_uploaded_file($info["tmp_name"], $new_path);
+
+        $update_file_name_sql = "UPDATE images SET file_name = :new_file_name WHERE id == :id;";
+        $update_file_name_params = [":new_file_name" => $new_file_name, ":id" => $image_id];
+        exec_sql_query($db, $update_file_name_sql, $update_file_name_params);
+
+        add_new_tags($db, $image_id, $tags);
+
+
+      }
+    }
+  }
+}
+
 
 // get all images
 $sql = "SELECT id, file_name FROM images;";
 $params = array();
 // get an array of results
 $all_images = exec_sql_query($db, $sql, $params)->fetchAll();
-
-// a function that takes in db, id, and tag (if applicable)
-// and return the images requested.
-// takes in: db, filter tag (default = all).
-// return: list of file names, e.g., ["1.jpg", "2.png"].
-function get_all_images_requested ($db, $id, $tag) {
-  // if there is a specific id requested
-  if ($id) {
-    $view_single_sql = "SELECT file_name, description FROM images WHERE id ==" . ":id;";
-    $params = [":id" => intval($id)];
-    $requested_images = exec_sql_query($db, $view_single_sql, $params)->fetchAll();
-  // if there are tags requested
-  } else if ($tag) {
-    $view_by_tag_sql = "SELECT file_name, description FROM images WHERE tag LIKE '%'||:tag||'%';";
-    $params = [":tag" => $tag];
-    $requested_images = exec_sql_query($db, $view_by_tag_sql, $params)->fetchAll();
-  }
-  return $requested_images;
-
-};
-
-//a function that takes in db and an image id
-// and returns a list of tags for this image
-function get_tags ($db, $id) {
-  $get_tags_sql = "SELECT DISTINCT tags.tag_name from tags INNER JOIN image_tags ON tags.id == image_tags.tag_id INNER JOIN images ON image_tags.image_id == " . ":id;";
-  $params = [":id" => $id];
-  $image_tags = exec_sql_query($db, $get_tags_sql, $params)->fetchAll();
-  return $image_tags;
-}
-
-//display an image
-function display_this_image($image){
-  $http_query_image = http_build_query(array('image_id' => $image['id']));?>
-  <div class="gird-item">
-      <a href="index.php?<?php echo $http_query_image; ?>">
-        <img src="uploads/<?php echo $image['file_name']; ?>"/>
-      </a>
-  </div>
-<?php
-};
-
-//display a tag
-function display_this_tag($tag) {
-  $http_query_tag = http_build_query(array('tag_name' => $tag['tag_name']));?>
-  <div class="tag-item">
-    <a href="index.php?<?php echo $http_query_tag; ?>">
-      #<?php echo $tag['tag_name']; ?>
-    </a>
-</div>
-<?php
-}
-
-// if there is a request to view a single image
-$view_single_image = FALSE;
-if (isset($_GET['image_id'])){
-  $view_single_image = TRUE;
-  $id = $_GET['image_id'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +116,7 @@ if (isset($_GET['image_id'])){
 
   <link rel="stylesheet" type="text/css" href="styles/site.css" media="all">
 
-  <title> Everyday Music - <?php echo $title; ?></title>
+  <title>Everyday Music</title>
 </head>
 
 <body>
@@ -88,30 +129,102 @@ if (isset($_GET['image_id'])){
 
   <?php
     if ($view_single_image) {
-      $images = get_all_images_requested($db, $id, null); // the assciative array
-      $img = $images[0]; // the image
-      $tags = get_tags($db, $id);
       ?>
       <div class=single-image-container>
-
         <div class="img">
           <img src="uploads/<?php echo $img['file_name'] ?>"/>
         </div>
 
-        <div class="description">
-          <p><?php echo $img['description']; ?></p>
+        <div class="description-tags">
+
+          <div class="description">
+            <p><?php echo $img['description']; ?></p>
+          </div>
+
+            <div class="tags">
+              <?php foreach ($tags as $tag) {
+                display_this_tag($tag);
+              } ?>
+            </div>
         </div>
 
-        <div class="tags">
-        <?php foreach ($tags as $tag) {
-          display_this_tag($tag);
+        <?php
+        if ($edit_image) { ?>
+          <div class="edit-tag">
+            <form id="edit-tag" action=<?php echo "index.php?image_id=" . $id;?> method="post">
+              <label for="new-tags">Add a tag:</label>
+              <input type="text" id="new-tags" name="new-tags"/>
+              <button type="submit" name="new-tags"><img id="submit" src="images/check.svg"></button>
+              <!-- icon: "https://www.s-ings.com/typicons/" -->
+            </form>
+          </div>
+
+        <?php
+        } else { ?>
+          <div class="dropdown">
+            <div class="dropdown-content">
+              <form id="edit" action=<?php echo "index.php?image_id=" . $id; ?>  method="post">
+                <input type="hidden" name="edit" value="yes"/>
+                <button type="submit"><img id="edit" src="images/edit.svg"></button>
+                <!-- icon: "https://www.s-ings.com/typicons/" -->
+              </form>
+              <form id="delete" action="index.php" method="post">
+                <!-- <input type="submit" name="delete" -->
+                <button type="submit" name="delete"><img id="delete" src="images/trash.svg"></button>
+                <!-- icon: "https://www.s-ings.com/typicons/" -->
+              </form>
+            </div>
+          </div>
+        <?php
         } ?>
-        </div>
+      </div>
+
+    <?php
+    } else if ($view_image_by_tag) { ?>
+      <div class="gallery">
+        <?php
+        if (count($images_by_tag) > 0) {
+          foreach ($images_by_tag as $img) {
+            display_this_image($img);
+          }
+        }; ?>
 
       </div>
 
     <?php
-    } else { ?>
+    } else if ($upload_image) { ?>
+      <div class="upload-container">
+        <form id="upload-image" method="post" enctype="multipart/form-data" action="index.php?upload=yes">
+
+        <div class="image-preview">
+           <input id="image" type="file" name="image">
+        </div>
+
+        <div class="description-tags">
+          <div class="upload-description">
+            <label for="description">Say something:</label>
+            <input id="description" type="text" name="description">
+          </div>
+
+          <div class="upload-tags">
+            <label for="tags">Hashtag...(seperate with ";")</label>
+            <input id="tags" type="text" name="tags">
+          </div>
+
+        </div>
+
+        <div class="submit">
+          <button name="image_upload" type="submit"><img id="uploadimage" src="images/upload.svg"/><button>
+        </div>
+
+        </form>
+
+    </div>
+
+    <?php
+    }
+
+    else { ?>
       <div class="gallery">
         <?php
         if (count($all_images) > 0) {
@@ -126,7 +239,9 @@ if (isset($_GET['image_id'])){
     }?>
 
 
-
+<cite>Source: <a href="https://www.s-ings.com/typicons/">All icons</a></cite>
+<cite>Seed data: created by Helen Wang</cite>
+<cite>Seed data: <a href="https://courses.lumenlearning.com/musicappreciation_with_theory/chapter/symphony-orchestras/">the first pic</a></cite>
 
   </main>
 

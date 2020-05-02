@@ -1,1 +1,1 @@
-<p class="foot">Da da da dum--</p>
+<p class="foot">A music-related image gallery.</p>
